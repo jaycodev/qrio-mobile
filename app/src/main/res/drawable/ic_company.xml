@@ -1,0 +1,30 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+
+    <!-- Rectángulo de fondo -->
+    <path
+        android:fillColor="#8E44AD"
+        android:fillAlpha="0.08"
+        android:pathData="M10,10h100v100h-100z"/>
+
+    <!-- N diagonal -->
+    <path
+        android:fillColor="#2980B9"
+        android:pathData="M30,30h15l40,60h-15z"/>
+
+    <!-- N barra izquierda -->
+    <path
+        android:fillColor="#2ECC71"
+        android:pathData="M30,30h15v60h-15z"/>
+
+    <!-- Líneas de cuadrícula -->
+    <path
+        android:strokeColor="#8E44AD"
+        android:strokeWidth="3"
+        android:pathData="M80,35h20
+                          M80,55h20
+                          M80,75h20"/>
+</vector>

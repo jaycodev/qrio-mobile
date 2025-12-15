@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_pure">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- TOOLBAR -->
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbarPromos"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/gold_dark"
+                app:navigationIcon="@drawable/ic_back">
+
+                <TextView
+                    android:id="@+id/toolbarTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Detalle de tu Promo"
+                    android:textColor="@color/white_pure"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center" />
+            </androidx.appcompat.widget.Toolbar>
+
+
+            <!-- IMAGEN BANNER -->
+            <ImageView
+                android:id="@+id/imgBannerPromo"
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                android:scaleType="centerCrop"
+                android:background="@color/gray_light" />
+
+
+            <!-- UBICACIÓN -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_location"
+                    android:tint="@color/gold_dark" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Producto en tienda"
+                    android:textColor="@color/success_green"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp">
+
+                <TextView
+                    android:id="@+id/tvVendidoPorLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vendido por "
+                    android:textColor="@color/carbon_black"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvVendidoPorNombre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bembos"
+                    android:textStyle="bold"
+                    android:textColor="@color/gold_dark"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tvNombrePromo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="1 Parrilla Regular + 1 Papa Regular"
+                android:textColor="@color/carbon_black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+
+            <!-- PRECIO + PRECIO TACHADO + DESCUENTO -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="4dp"
+                android:gravity="center_vertical">
+
+                <!-- PRECIO FINAL -->
+                <TextView
+                    android:id="@+id/tvPrecio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="S/ 19.90"
+                    android:textColor="@color/gold_title"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <!-- PRECIO ORIGINAL -->
+                <TextView
+                    android:id="@+id/tvPrecioOriginal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="S/ 28.90"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/divider_gray"
+                    android:textSize="13sp"
+                    android:paintFlags="strike_thru_text" />
+
+                <!-- DESCUENTO -->
+                <TextView
+                    android:id="@+id/tvDescuento"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:background="@drawable/bg_descuento"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:text="-30%"
+                    android:textColor="@color/white_pure"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+            <!-- DESCRIPCIÓN -->
+            <TextView
+                android:id="@+id/tvDescripcionPromo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="Descripción del producto aquí"
+                android:textColor="@color/carbon_black"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+    <!-- BOTÓN FLOTANTE -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnChatAi"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_margin="20dp"
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/ic_chat"
+        app:tint="@color/white"
+        app:backgroundTint="@color/gold_dark" />
+
+</FrameLayout>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 🎨 COLORES PRINCIPALES -->
+    <color name="carbon_black">#1F1F1F</color>          <!-- Fondo principal -->
+    <color name="gold_soft">#C59D5F</color>             <!-- Acentos / Botones -->
+    <color name="white_pure">#FFFFFF</color>            <!-- Texto, fondos -->
+    <color name="gray_light">#D9D9D9</color>            <!-- Cards, bordes -->
+    <color name="gold_dark">#8C6A3A</color>             <!-- Hover, títulos -->
+    <color name="gold_title">#472D08</color>             <!-- Hover, títulos -->
+
+
+    <!-- 🎯 VARIANTES DE BOTONES -->
+    <color name="button_primary">#C59D5F</color>        <!-- Botón principal -->
+    <color name="button_primary_pressed">#8C6A3A</color> <!-- Botón presionado -->
+    <color name="button_primary_disabled">#A88955</color> <!-- Botón deshabilitado -->
+
+    <!-- 🖤 FONDOS & SUPERFICIES -->
+    <color name="background_main">#1F1F1F</color>
+    <color name="background_card">#2A2A2A</color>        <!-- Para tarjetas elegantes -->
+    <color name="background_light">#F5F5F5</color>       <!-- Secciones claras -->
+
+    <!-- ✍️ TEXTOS -->
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#D9D9D9</color>
+    <color name="text_highlight">#C59D5F</color>         <!-- Títulos -->
+    <color name="text_muted">#7C7979</color>             <!-- Subtítulos -->
+
+    <!-- 📌 LÍNEAS / BORDES -->
+    <color name="divider_gray">#3A3A3A</color>
+    <color name="border_gold">#C59D5F</color>
+
+    <!-- ⭐ ESPECIALES -->
+    <color name="icon_gold">#C59D5F</color>
+    <color name="icon_white">#FFFFFF</color>
+    <color name="error_red">#E74C3C</color>
+    <color name="success_green">#2ECC71</color>
+    <color name="desc">#FF9800</color>
+
+
+</resources>

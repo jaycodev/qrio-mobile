@@ -1,0 +1,22 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Círculo grande de la lupa -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#2980B9"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M11,4a7,7 0 1,1 0,14a7,7 0 1,1 0,-14z"/>
+
+    <!-- Mango de la lupa -->
+    <path
+        android:fillColor="@color/success_green"
+        android:strokeColor="#2980B9"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M16,16l4,4"/>
+</vector>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient_login">
+
+    <!-- 👤 Ícono perfil en esquina superior derecha -->
+    <ImageView
+        android:id="@+id/btnProfile"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/ic_user"
+        android:layout_margin="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
+
+    <!-- 🔵 FILA DE LOS 4 CÍRCULOS (DEBAJO DEL ÍCONO DE PERFIL) -->
+    <LinearLayout
+        android:id="@+id/topButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnProfile"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:weightSum="4">
+
+        <!-- 1️⃣ Recargar celular -->
+        <LinearLayout
+            android:id="@+id/btnRecargar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/circle_button_bg"
+                android:padding="12dp"
+                android:src="@drawable/ic_comercio" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Comercio"
+                android:textColor="@color/white_pure"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- 2️⃣ Pagar servicios -->
+        <LinearLayout
+            android:id="@+id/btnServicios"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/circle_button_bg"
+                android:padding="12dp"
+                android:src="@drawable/ic_catalogo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Catálogo"
+                android:textColor="@color/white_pure"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- 3️⃣ Promos -->
+        <LinearLayout
+            android:id="@+id/btnPromos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/circle_button_bg"
+                android:padding="12dp"
+                android:src="@drawable/ic_promon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Promos"
+                android:textColor="@color/white_pure"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- 4️⃣ Ajustes -->
+        <LinearLayout
+            android:id="@+id/btnAjustes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/circle_button_bg"
+                android:padding="12dp"
+                android:src="@drawable/ic_ajustes" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Ajustes"
+                android:textColor="@color/white_pure"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- FONDO BLANCO REDONDEADO (DEBAJO DE LOS CÍRCULOS) -->
+    <LinearLayout
+        android:id="@+id/contentBox"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/topButtons"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_login_bottom"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- 🟥 LISTA DE ITEMS CON RECYCLER (2 columnas) -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvHome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:paddingBottom="20dp"
+            android:clipToPadding="false"/>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

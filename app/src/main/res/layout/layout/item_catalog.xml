@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- IMAGEN DEL PRODUCTO -->
+        <ImageView
+            android:id="@+id/imgProducto"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_food"/>
+
+        <!-- CONTENIDO -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp">
+
+            <!-- NOMBRE -->
+            <TextView
+                android:id="@+id/txtNombreProducto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1 Parrilla Regular + 1 Papa Regular"
+                android:textColor="@color/carbon_black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <!-- DESCRIPCIÓN -->
+
+            <!-- PRECIO -->
+            <TextView
+                android:id="@+id/txtDescripcionProducto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Delicioso aperitivo, acompañado de tres salsas a su elección, drijido a dos personas"
+                android:textColor="@color/carbon_black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/txtPrecioProducto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="S/ 23.90"
+                android:textColor="@color/gold_title"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:startColor="@color/button_primary"
+        android:centerColor="@color/button_primary_disabled"
+        android:endColor="@color/button_primary_pressed"
+        android:angle="180"/>
+</shape>
+
+

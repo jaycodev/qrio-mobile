@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- GENERAL -->
+    <string name="app_name">MiServicioRestaurante</string>
+    <string name="loading">Cargando...</string>
+    <string name="retry">Reintentar</string>
+    <string name="save">Guardar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="confirm">Confirmar</string>
+    <string name="continue_text">Continuar</string>
+
+    <!-- AUTENTICACIÓN -->
+    <string name="login_title">Iniciar sesión</string>
+    <string name="login_subtitle">Ingresa tu correo para continuar</string>
+    <string name="login_button">Continuar</string>
+    <string name="register">Crear cuenta</string>
+    <string name="logout">Cerrar sesión</string>
+
+    <!-- HOME -->
+    <string name="welcome">¡Bienvenido!</string>
+    <string name="discover_restaurants">Descubre restaurantes</string>
+    <string name="view_menu">Ver menú</string>
+    <string name="view_offers">Ver ofertas</string>
+
+    <!-- RESTAURANTES -->
+    <string name="restaurants_title">Restaurantes</string>
+    <string name="branches">Sucursales</string>
+    <string name="open_menu">Abrir menú</string>
+    <string name="restaurant_info">Información del restaurante</string>
+
+    <!-- MENÚ -->
+    <string name="categories">Categorías</string>
+    <string name="dishes">Platos</string>
+    <string name="add_to_cart">Agregar al pedido</string>
+    <string name="not_available">No disponible</string>
+
+    <!-- OFERTAS -->
+    <string name="offers_title">Ofertas disponibles</string>
+    <string name="offer_price">Precio oferta</string>
+    <string name="see_more">Ver más</string>
+
+    <!-- CARRITO / PEDIDO -->
+    <string name="cart_title">Tu Pedido</string>
+    <string name="cart_empty">Tu pedido está vacío</string>
+    <string name="checkout">Realizar pedido</string>
+    <string name="total">Total</string>
+    <string name="quantity">Cantidad</string>
+    <string name="remove_item">Eliminar</string>
+
+    <!-- QR -->
+    <string name="scan_qr">Escanear código QR</string>
+    <string name="table_detected">Mesa detectada</string>
+
+    <!-- MENSAJES DE SISTEMA -->
+    <string name="error_general">Ocurrió un error. Inténtalo nuevamente.</string>
+    <string name="error_network">Sin conexión. Revisa tu internet.</string>
+    <string name="success_action">Acción realizada con éxito.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

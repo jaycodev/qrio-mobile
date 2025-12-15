@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragment_login">
+
+    <!-- LOGIN -->
+    <fragment
+        android:id="@+id/fragment_login"
+        android:name="com.cibertec.qriomobile.LoginFragment"
+        >
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+
+    </fragment>
+
+
+    <!-- HOME -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.cibertec.qriomobile.HomeFragment"
+     >
+
+        <!-- Acción hacia Comercio -->
+        <action
+            android:id="@+id/action_homeFragment_to_tradeFragment"
+            app:destination="@id/fragment_trade" />
+
+        <!-- Acción hacia Catalogo -->
+        <action
+            android:id="@+id/action_homeFragment_to_catalogFragment"
+            app:destination="@id/fragment_catalog" />
+
+        <!-- Acción hacia Ajustes -->
+        <action
+            android:id="@+id/action_homeFragment_to_promotionFragment"
+            app:destination="@id/fragment_promotion" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_detailPromotionFragment"
+            app:destination="@id/fragment_detail_promotion" />
+    </fragment>
+
+
+
+
+    <!-- CATALOG LIST -->
+    <fragment
+        android:id="@+id/fragment_catalog"
+        android:name="com.cibertec.qriomobile.CatalogFragment"
+        android:label="Catalog">
+        <action
+            android:id="@+id/action_catalogFragment_to_detailCatalogFragment"
+            app:destination="@id/fragment_detail_catalog" />
+    </fragment>
+
+    <!-- CATALOG DETAIL -->
+
+    <fragment
+        android:id="@+id/fragment_detail_catalog"
+        android:name="com.cibertec.qriomobile.DetailCatalogFragment"
+        android:label="Catalog Detail">
+
+        <argument
+            android:name="id"
+            app:argType="long" />
+
+        <argument
+            android:name="nombre"
+            app:argType="string" />
+
+        <argument
+            android:name="descripcion"
+            app:argType="string" />
+
+        <argument
+            android:name="precio"
+            app:argType="float" />
+
+        <argument
+            android:name="imagen"
+            app:argType="integer" />
+
+    </fragment>
+
+
+    <!-- PROMOTION LIST -->
+    <fragment
+        android:id="@+id/fragment_promotion"
+        android:name="com.cibertec.qriomobile.PromotionFragment"
+        android:label="Promotion">
+
+        <action
+            android:id="@+id/action_promotionFragment_to_detailPromotionFragment"
+            app:destination="@id/fragment_detail_promotion" />
+    </fragment>
+
+    <!-- PROMOTION DETAIL -->
+    <fragment
+        android:id="@+id/fragment_detail_promotion"
+        android:name="com.cibertec.qriomobile.DetailPromotionFragment"
+        android:label="Promotion Detail">
+
+        <argument
+            android:name="promoId"
+            app:argType="long" />
+
+        <argument
+            android:name="nombre"
+            app:argType="string" />
+
+        <argument
+            android:name="precioFinal"
+            app:argType="float" />
+
+        <argument
+            android:name="precioOriginal"
+            app:argType="float" />
+
+        <argument
+            android:name="descuento"
+            app:argType="integer" />
+
+        <argument
+            android:name="imagen"
+            app:argType="integer" />
+    </fragment>
+
+
+
+    <!-- TRADE -->
+    <fragment
+        android:id="@+id/fragment_trade"
+        android:name="com.cibertec.qriomobile.TradeFragment"
+        android:label="Trade" />
+
+</navigation>
