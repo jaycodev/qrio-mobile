@@ -64,5 +64,9 @@ class HomeFragment : Fragment() {
         binding.btnPromos.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_promotionFragment)
         }
+
+        binding.btnProfile.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
+        }
     }
 }
