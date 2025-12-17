@@ -22,6 +22,11 @@
         android:name="com.cibertec.qriomobile.HomeFragment"
      >
 
+        <!-- Acción hacia Perfil -->
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/fragment_profile" />
+
         <!-- Acción hacia Comercio -->
         <action
             android:id="@+id/action_homeFragment_to_tradeFragment"
@@ -133,6 +138,12 @@
     <fragment
         android:id="@+id/fragment_trade"
         android:name="com.cibertec.qriomobile.TradeFragment"
+        android:label="Trade" />
+
+    <!-- TRADE -->
+    <fragment
+        android:id="@+id/fragment_profile"
+        android:name="com.cibertec.qriomobile.ProfileFragment"
         android:label="Trade" />
 
 </navigation>

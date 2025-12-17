@@ -30,6 +30,8 @@
     <color name="divider_gray">#3A3A3A</color>
     <color name="border_gold">#C59D5F</color>
 
+    <color name="background_material_card">#EDDC9F</color>
+
     <!-- ⭐ ESPECIALES -->
     <color name="icon_gold">#C59D5F</color>
     <color name="icon_white">#FFFFFF</color>

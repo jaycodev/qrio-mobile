@@ -14,6 +14,9 @@ import com.cibertec.qriomobile.data.model.ProductDto
 import com.cibertec.qriomobile.data.model.OfferDto
 import com.cibertec.qriomobile.presentation.adapters.PromoAdapter
 
+import androidx.appcompat.app.AppCompatActivity
+
+
 class PromotionFragment : Fragment() {
 
     private var _binding: FragmentPromotionBinding? = null
@@ -35,6 +38,18 @@ class PromotionFragment : Fragment() {
 
         binding.recyclerPromos.layoutManager =
             GridLayoutManager(requireContext(), 2)
+
+        /*
+        * // 🔹 Conectar Toolbar con el NavController - ponre en todos los fragments
+        val activity = requireActivity() as AppCompatActivity
+        activity.setSupportActionBar(binding.toolbarPromos)
+        activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        // 🔹 Recycler
+        binding.recyclerPromos.layoutManager =
+            GridLayoutManager(requireContext(), 2)
+        * */
+
 
         // --- Datos fake (como tú dijiste) ---
         val product = ProductDto(
