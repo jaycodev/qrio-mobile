@@ -58,7 +58,8 @@ class PromotionFragment : Fragment() {
             name = "1 Parrilla Regular + 1 Papa Regular",
             description = "Combo especial",
             price = 28.90,
-            image_url = R.drawable.empty
+            image_url = null,
+            image_res = R.drawable.empty
         )
 
         val offer = OfferDto(
@@ -70,7 +71,7 @@ class PromotionFragment : Fragment() {
         val promoUi = PromoUi(
             id = product.id,
             name = product.name,
-            imageUrl = product.image_url,
+            imageUrl = product.image_res ?: 0,
             priceOriginal = product.price,
             discountPercent = offer.offer_discount_percentage,
             priceFinal = calcularPrecioFinal(

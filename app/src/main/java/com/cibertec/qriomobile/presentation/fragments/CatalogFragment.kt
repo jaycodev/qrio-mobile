@@ -42,7 +42,8 @@ class CatalogFragment : Fragment() {
                 name = "Arroz Chaufa",
                 description = "Delicioso arroz chaufa con pollo",
                 price = 15.90,
-                image_url = R.drawable.ic_company
+                image_url = null,
+                image_res = R.drawable.ic_company
             ),
             ProductDto(
                 id = 2,
@@ -50,7 +51,8 @@ class CatalogFragment : Fragment() {
                 name = "Lomo Saltado",
                 description = "Clásico lomo saltado peruano",
                 price = 18.50,
-                image_url = R.drawable.ic_company
+                image_url = null,
+                image_res = R.drawable.ic_company
             )
         )
 
@@ -69,7 +71,7 @@ class CatalogFragment : Fragment() {
                     nombre = product.name,
                     descripcion = product.description ?: "",
                     precio = product.price.toFloat(),
-                    imagen = product.image_url
+                    imagen = product.image_res ?: 0
                 )
 
         findNavController().navigate(action)

@@ -1,11 +1,25 @@
 package com.cibertec.qriomobile.data.model
 
-data class OrderDto(
-    val id: Long? = null,
-    val code: String? = null,
+import java.math.BigDecimal
 
-    val status: String? = "PENDIENTE",
-    val total: Double? = null,
-    val people: Int? = null,
-    val created_at: String? = null
-)
+// Representa OrderListResponse (API)
+data class OrderDto(
+    val id: Long,
+    val code: String,
+    val table: Table,
+    val customer: Customer,
+    val status: String,
+    val total: BigDecimal,
+    val people: Int,
+    val itemCount: Long
+) {
+    data class Table(
+        val id: Long,
+        val number: Int
+    )
+    data class Customer(
+        val id: Long,
+        val code: String,
+        val name: String
+    )
+}
