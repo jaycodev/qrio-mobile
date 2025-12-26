@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.cibertec.qriomobile.data.model.ProductDto
 import com.cibertec.qriomobile.databinding.ItemCatalogBinding
+import com.bumptech.glide.Glide
+import com.cibertec.qriomobile.R
 
 
 class CatalogAdapter(
@@ -29,7 +31,18 @@ class CatalogAdapter(
         val item = items[position]
         val b = holder.binding
 
-        b.imgProducto.setImageResource(item.image_url)
+            // Cargar imagen: URL si existe, si no recurso local
+            when {
+                !item.image_url.isNullOrBlank() -> {
+                    Glide.with(b.imgProducto)
+                        .load(item.image_url)
+                        .placeholder(R.drawable.empty)
+                        .error(R.drawable.empty)
+                        .into(b.imgProducto)
+                }
+                item.image_res != null -> b.imgProducto.setImageResource(item.image_res)
+                else -> b.imgProducto.setImageResource(R.drawable.empty)
+            }
         b.txtNombreProducto.text = item.name
         b.txtDescripcionProducto.text = item.description
         b.txtPrecioProducto.text = "S/ ${item.price}"
