@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.cibertec.qriomobile.databinding.FragmentDetailCatalogBinding
+import com.cibertec.qriomobile.cart.CartManager
 
 
 class DetailCatalogFragment : Fragment() {
@@ -57,7 +59,17 @@ class DetailCatalogFragment : Fragment() {
 
         // Comprar
         binding.btnComprarDetalle.setOnClickListener {
-            // lógica futura: carrito / pedido
+            val args = DetailCatalogFragmentArgs.fromBundle(requireArguments())
+            // Agregar al carrito
+            CartManager.add(
+                productId = args.id,
+                name = args.nombre,
+                price = args.precio.toDouble(),
+                quantity = cantidad,
+                imageRes = args.imagen
+            )
+            // Ir al carrito
+            findNavController().navigate(R.id.fragment_car)
         }
     }
 

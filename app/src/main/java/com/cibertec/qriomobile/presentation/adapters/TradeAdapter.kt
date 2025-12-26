@@ -36,7 +36,8 @@ class TradeAdapter(
 
         fun bind(restaurant: RestaurantDto) {
             txtNombre.text = restaurant.name
-            imgLogo.setImageResource(restaurant.logo_url)
+            val resId = if (restaurant.logo_url != 0) restaurant.logo_url else R.drawable.ic_company
+            imgLogo.setImageResource(resId)
 
             itemView.setOnClickListener {
                 onItemClick(restaurant)

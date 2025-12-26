@@ -6,10 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.cibertec.qriomobile.data.model.ProductDto
 import com.cibertec.qriomobile.databinding.FragmentCatalogBinding
 import com.cibertec.qriomobile.presentation.adapters.CatalogAdapter
+import androidx.lifecycle.lifecycleScope
+import com.cibertec.qriomobile.data.remote.NetworkResult
+import com.cibertec.qriomobile.data.RetrofitClient
+import com.cibertec.qriomobile.data.remote.api.ApiService
+import com.cibertec.qriomobile.data.repository.ProductRepository
+import com.cibertec.qriomobile.R
+import com.cibertec.qriomobile.cart.CartManager
 
 
 class CatalogFragment : Fragment() {
@@ -18,6 +26,9 @@ class CatalogFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var adapter: CatalogAdapter
+    private val args: CatalogFragmentArgs by navArgs()
+    private val api: ApiService by lazy { RetrofitClient.api }
+    private val productRepo by lazy { ProductRepository(api) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,34 +44,22 @@ class CatalogFragment : Fragment() {
 
         binding.recyclerComercios.layoutManager =
             GridLayoutManager(requireContext(), 2)
-
-        // --- Datos fake ---
-        val products = listOf(
-            ProductDto(
-                id = 1,
-                category_id = 10,
-                name = "Arroz Chaufa",
-                description = "Delicioso arroz chaufa con pollo",
-                price = 15.90,
-                image_url = null,
-                image_res = R.drawable.ic_company
-            ),
-            ProductDto(
-                id = 2,
-                category_id = 10,
-                name = "Lomo Saltado",
-                description = "Clásico lomo saltado peruano",
-                price = 18.50,
-                image_url = null,
-                image_res = R.drawable.ic_company
-            )
-        )
-
-        adapter = CatalogAdapter(products) { product ->
+        adapter = CatalogAdapter(emptyList()) { product ->
             onProductClicked(product)
         }
 
         binding.recyclerComercios.adapter = adapter
+
+        val branchId = args.branchId
+        val tableNumber = args.tableNumber
+
+        // Persistimos contexto del QR para el carrito / pedidos
+        CartManager.branchId = branchId
+        CartManager.tableNumber = tableNumber
+
+        if (branchId > 0) {
+            loadProducts(branchId)
+        }
     }
 
     private fun onProductClicked(product: ProductDto) {
@@ -71,10 +70,25 @@ class CatalogFragment : Fragment() {
                     nombre = product.name,
                     descripcion = product.description ?: "",
                     precio = product.price.toFloat(),
-                    imagen = product.image_res ?: 0
+                    imagen = product.imageRes ?: 0
                 )
 
         findNavController().navigate(action)
+    }
+
+    private fun loadProducts(branchId: Long) {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            when (val res = productRepo.getProductsByBranch(branchId)) {
+                is NetworkResult.Success -> adapter = CatalogAdapter(res.data) { product -> onProductClicked(product) }.also {
+                    binding.recyclerComercios.adapter = it
+                }
+                else -> {
+                    adapter = CatalogAdapter(emptyList()) { product -> onProductClicked(product) }.also {
+                        binding.recyclerComercios.adapter = it
+                    }
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {

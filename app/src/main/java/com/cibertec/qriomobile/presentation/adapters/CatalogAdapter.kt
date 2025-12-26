@@ -33,14 +33,14 @@ class CatalogAdapter(
 
             // Cargar imagen: URL si existe, si no recurso local
             when {
-                !item.image_url.isNullOrBlank() -> {
+                !item.imageUrl.isNullOrBlank() -> {
                     Glide.with(b.imgProducto)
-                        .load(item.image_url)
+                        .load(item.imageUrl)
                         .placeholder(R.drawable.empty)
                         .error(R.drawable.empty)
                         .into(b.imgProducto)
                 }
-                item.image_res != null -> b.imgProducto.setImageResource(item.image_res)
+                item.imageRes != null -> b.imgProducto.setImageResource(item.imageRes)
                 else -> b.imgProducto.setImageResource(R.drawable.empty)
             }
         b.txtNombreProducto.text = item.name

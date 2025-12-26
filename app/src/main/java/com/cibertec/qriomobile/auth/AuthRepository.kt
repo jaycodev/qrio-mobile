@@ -21,7 +21,7 @@ object AuthRepository {
 
     fun onLogout() {
         tokenCache = null
-        AuthManager.clearToken()
+        AuthManager.clear()
     }
 
     fun currentToken(): String? = tokenCache

@@ -6,16 +6,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.navigation.fragment.findNavController
 import com.cibertec.qriomobile.R
 import com.cibertec.qriomobile.databinding.FragmentTradeBinding
 import com.cibertec.qriomobile.data.model.RestaurantDto
 import com.cibertec.qriomobile.presentation.adapter.TradeAdapter
+import com.cibertec.qriomobile.data.RetrofitClient
+import com.cibertec.qriomobile.data.remote.NetworkResult
+import com.cibertec.qriomobile.data.remote.api.ApiService
+import com.cibertec.qriomobile.data.repository.RestaurantRepository
 
 class TradeFragment : Fragment() {
 
     private var _binding: FragmentTradeBinding? = null
     private val binding get() = _binding!!
+
+    private val api: ApiService by lazy { RetrofitClient.api }
+    private val restaurantRepo by lazy { RestaurantRepository(api) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +40,7 @@ class TradeFragment : Fragment() {
 
         setupToolbar()
         setupRecycler()
+        loadRestaurants()
     }
 
     private fun setupToolbar() {
@@ -40,36 +50,45 @@ class TradeFragment : Fragment() {
     }
 
     private fun setupRecycler() {
-        val listaRestaurantes = listOf(
-            RestaurantDto(
-                id = 1,
-                name = "Bembos",
-                logo_url = R.drawable.ic_company
-            ),
-            RestaurantDto(
-                id = 2,
-                name = "KFC",
-                logo_url = R.drawable.ic_company
-            ),
-            RestaurantDto(
-                id = 3,
-                name = "Pizza Hut",
-                logo_url = R.drawable.ic_company
-            )
-        )
+        // Change from LinearLayoutManager horizontal to GridLayoutManager
+        binding.recyclerComercios.layoutManager = GridLayoutManager(requireContext(), 3)
+        
+        binding.recyclerComercios.adapter = TradeAdapter(emptyList()) { restaurant ->
+            val rid = restaurant.id ?: 0L
+            val action = TradeFragmentDirections.actionTradeFragmentToPromotionFragment(rid)
+            findNavController().navigate(action)
+        }
+    }
 
-        binding.recyclerComercios.apply {
-            layoutManager = LinearLayoutManager(
-                requireContext(),
-                LinearLayoutManager.HORIZONTAL,
-                false
-            )
-            adapter = TradeAdapter(listaRestaurantes) { restaurant ->
-                Toast.makeText(
-                    requireContext(),
-                    "Seleccionaste: ${restaurant.name}",
-                    Toast.LENGTH_SHORT
-                ).show()
+    private fun loadRestaurants() {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            when (val res = restaurantRepo.getRestaurants()) {
+                is NetworkResult.Success -> {
+                    // Asigna placeholder si no hay logo
+                    val items = res.data.map { r ->
+                        RestaurantDto(
+                            id = r.id,
+                            name = r.name,
+                            description = r.description,
+                            logo_url = if (r.logo_url != 0) r.logo_url else R.drawable.ic_company,
+                            is_active = r.is_active
+                        )
+                    }
+                    binding.recyclerComercios.adapter = TradeAdapter(items) { restaurant ->
+                        val rid = restaurant.id ?: 0L
+                        val action = TradeFragmentDirections.actionTradeFragmentToPromotionFragment(rid)
+                        findNavController().navigate(action)
+                    }
+                }
+                else -> {
+                    binding.recyclerComercios.adapter = TradeAdapter(emptyList()) { restaurant ->
+                        Toast.makeText(
+                            requireContext(),
+                            "Sin restaurantes",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
             }
         }
     }
