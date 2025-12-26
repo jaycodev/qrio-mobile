@@ -1,5 +1,14 @@
 package com.cibertec.qriomobile.auth
 
+object AuthManager {
+    @Volatile private var token: String? = null
+
+    fun setToken(value: String?) { token = value }
+    fun getToken(): String? = token
+    fun clear() { token = null }
+}
+package com.cibertec.qriomobile.auth
+
 import com.cibertec.qriomobile.data.RetrofitClient
 
 /**
