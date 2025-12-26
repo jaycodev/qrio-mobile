@@ -49,4 +49,19 @@ object RetrofitClient {
             .build()
             .create(ApiService::class.java)
     }
+
+    // Exponer creación genérica de servicios (e.g., AuthApi)
+    fun <T> create(service: Class<T>): T {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(httpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(service)
+    }
+
+    // Enlazar proveedor de token con AuthManager automáticamente
+    init {
+        setAuthTokenProvider { com.cibertec.qriomobile.auth.AuthManager.getToken() }
+    }
 }
