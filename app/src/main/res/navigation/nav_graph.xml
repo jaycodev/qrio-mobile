@@ -2,17 +2,44 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/fragment_login">
+    app:startDestination="@id/loginFragment">
+
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.cibertec.qriomobile.ProfileFragment"
+        android:label="Profile">
+
+        <action
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+
+    </fragment>
+
 
     <!-- LOGIN -->
     <fragment
-        android:id="@+id/fragment_login"
+        android:id="@+id/loginFragment"
         android:name="com.cibertec.qriomobile.LoginFragment"
-        >
-        <action
-            android:id="@+id/action_loginFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+        android:label="Login">
 
+        <action
+            android:id="@+id/action_login_to_completeProfile"
+            app:destination="@id/completeProfileFragment"/>
+
+        <action
+            android:id="@+id/action_login_to_home"
+            app:destination="@id/homeFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/completeProfileFragment"
+        android:name="com.cibertec.qriomobile.CompleteProfileFragment"
+        android:label="Complete Profile">
+
+        <action
+            android:id="@+id/action_completeProfile_to_home"
+            app:destination="@id/homeFragment"/>
     </fragment>
 
 

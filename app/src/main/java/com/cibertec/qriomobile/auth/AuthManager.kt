@@ -2,18 +2,25 @@ package com.cibertec.qriomobile.auth
 
 import com.cibertec.qriomobile.data.RetrofitClient
 
-/**
- * Administra el token de autenticación (JWT del backend tras el intercambio de Firebase).
- * Llama a `init()` una vez (por ejemplo, en MainActivity.onCreate) para enlazar el proveedor con Retrofit.
- */
+
+// AuthManager.kt
 object AuthManager {
-    @Volatile private var token: String? = null
+    private var token: String? = null
 
     fun init() {
-        RetrofitClient.setAuthTokenProvider { token }
+        // Inicialización si necesitas algo al arrancar la app
     }
 
-    fun setToken(value: String?) { token = value }
     fun getToken(): String? = token
-    fun clear() { token = null }
+
+    fun setToken(newToken: String?) {
+        token = newToken
+        RetrofitClient.setAuthTokenProvider { token } // Inyecta en el interceptor
+    }
+
+    fun clearToken() {
+        token = null
+        RetrofitClient.setAuthTokenProvider { null }
+    }
+
 }

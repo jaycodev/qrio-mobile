@@ -9,6 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
+
     private const val BASE_URL = "https://api-qrio.onrender.com"
 
     // Proveedor de token (inyectar desde capa de auth Firebase)
