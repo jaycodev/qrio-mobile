@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/fragment_register" />
 
     </fragment>
 
@@ -101,7 +104,11 @@
     <fragment
         android:id="@+id/fragment_car"
         android:name="com.cibertec.qriomobile.presentation.fragments.CarFragment"
-        android:label="Car" />
+        android:label="Car">
+        <action
+            android:id="@+id/action_carFragment_to_summaryStripeFragment"
+            app:destination="@id/fragment_summary_stripe" />
+    </fragment>
 
 
     <!-- PROMOTION LIST -->
@@ -163,10 +170,38 @@
             app:destination="@id/fragment_promotion" />
     </fragment>
 
-    <!-- TRADE -->
+    <!-- PROFILE -->
     <fragment
         android:id="@+id/fragment_profile"
         android:name="com.cibertec.qriomobile.ProfileFragment"
-        android:label="Trade" />
+        android:label="Profile" />
+
+    <!-- REGISTER -->
+    <fragment
+        android:id="@+id/fragment_register"
+        android:name="com.cibertec.qriomobile.RegisterFragment"
+        android:label="Register" />
+
+    <!-- SUMMARY / CHECKOUT -->
+    <fragment
+        android:id="@+id/fragment_summary_stripe"
+        android:name="com.cibertec.qriomobile.presentation.fragments.SummaryStripeFragment"
+        android:label="Summary">
+        <action
+            android:id="@+id/action_summaryStripeFragment_to_confirmationStripeFragment"
+            app:destination="@id/fragment_confirmation_stripe" />
+    </fragment>
+
+    <!-- CONFIRMATION -->
+    <fragment
+        android:id="@+id/fragment_confirmation_stripe"
+        android:name="com.cibertec.qriomobile.presentation.fragments.ConfirmationStripeFragment"
+        android:label="Confirmation">
+        <action
+            android:id="@+id/action_confirmationStripeFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>

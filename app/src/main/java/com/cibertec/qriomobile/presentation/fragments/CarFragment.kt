@@ -5,7 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.cibertec.qriomobile.R
 import com.cibertec.qriomobile.cart.CartManager
 import com.cibertec.qriomobile.databinding.FragmentCarBinding
 import com.cibertec.qriomobile.presentation.adapters.CartAdapter
@@ -48,9 +51,14 @@ class CarFragment : Fragment() {
             refreshCart()
         }
 
-        // Continuar (pendiente integrar pedido)
+        // Continuar
         binding.btnContinuar.setOnClickListener {
-            // TODO: Integrar creación de pedido usando CartManager.branchId y tableNumber
+            if (CartManager.count() == 0) {
+                Toast.makeText(context, "El carrito está vacío", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            // Navegar al resumen / pago
+            findNavController().navigate(R.id.action_carFragment_to_summaryStripeFragment)
         }
 
         refreshCart()

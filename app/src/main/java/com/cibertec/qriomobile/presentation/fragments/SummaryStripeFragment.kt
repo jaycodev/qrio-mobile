@@ -1,60 +1,120 @@
 package com.cibertec.qriomobile.presentation.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.cibertec.qriomobile.R
+import com.cibertec.qriomobile.cart.CartManager
+import com.cibertec.qriomobile.data.RetrofitClient
+import com.cibertec.qriomobile.data.model.CreateOrderItemDto
+import com.cibertec.qriomobile.data.model.CreateOrderRequestDto
+import com.cibertec.qriomobile.data.remote.NetworkResult
+import com.cibertec.qriomobile.data.remote.api.ApiService
+import com.cibertec.qriomobile.databinding.FragmentSummaryStripeBinding
+import java.math.BigDecimal
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [SummaryStripeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SummaryStripeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding: FragmentSummaryStripeBinding? = null
+    private val binding get() = _binding!!
+
+    // Simular ID de cliente (en una app real vendría del Auth/User)
+    private val fakeCustomerId = 2L
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_summary_stripe, container, false)
+    ): View {
+        _binding = FragmentSummaryStripeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SummaryStripeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SummaryStripeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
+        // Llenar datos
+        val subtotal = CartManager.total()
+        val discount = 0.0 // Lógica de descuentos
+        val total = subtotal - discount
+
+        binding.txtSubtotal.text = "S/ %.2f".format(subtotal)
+        binding.txtDescuento.text = "- S/ %.2f".format(discount)
+        binding.txtTotal.text = "S/ %.2f".format(total)
+
+        binding.btnPagar.setOnClickListener {
+            createOrder(total)
+        }
+    }
+
+    private fun createOrder(totalAmount: Double) {
+        val branchId = CartManager.branchId
+        val tableNum = CartManager.tableNumber
+
+        // Validaciones básicas
+        if (branchId <= 0L) {
+            Toast.makeText(context, "Error: No se ha detectado sucursal (QR)", Toast.LENGTH_SHORT).show()
+            // Permitir continuar para pruebas si lo deseas, o bloquear
+            // return 
+        }
+
+        // Preparar items
+        val orderItems = CartManager.getItems().map { item ->
+            CreateOrderItemDto(
+                productId = item.productId,
+                quantity = item.quantity,
+                unitPrice = BigDecimal.valueOf(item.unitPrice)
+            )
+        }
+
+        // Preparar request
+        val request = CreateOrderRequestDto(
+            tableId = tableNum.toLong(),
+            customerId = fakeCustomerId, // Ajustar con usuario real logueado
+            total = BigDecimal.valueOf(totalAmount),
+            people = 1,
+            items = orderItems
+        )
+
+        binding.btnPagar.isEnabled = false
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            try {
+                val api = RetrofitClient.api
+                val response = api.createOrder(request)
+                
+                // Corrección: ApiSuccess no tiene campo 'success', solo 'message' y 'data'.
+                // Retrofit considera isSuccessful si el código es 2xx.
+                if (response.isSuccessful) {
+                    val apiResult = response.body()
+                    if (apiResult != null) {
+                        // Se asume éxito si llega body. Puedes chequear apiResult.data != null si quieres
+                        CartManager.clear()
+                        findNavController().navigate(R.id.action_summaryStripeFragment_to_confirmationStripeFragment)
+                    } else {
+                        Toast.makeText(context, "Respuesta vacía del servidor", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(context, "Error creando pedido: ${response.code()}", Toast.LENGTH_SHORT).show()
                 }
+            } catch (e: Exception) {
+                Toast.makeText(context, "Fallo de conexión: ${e.message}", Toast.LENGTH_SHORT).show()
+            } finally {
+                binding.btnPagar.isEnabled = true
             }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

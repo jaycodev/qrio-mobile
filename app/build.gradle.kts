@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
 
     id("androidx.navigation.safeargs.kotlin")
-    id("com.google.gms.google-services")
+    // Firebase plugin removido
 }
 
 android {
@@ -68,8 +68,5 @@ dependencies {
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     implementation("com.google.zxing:core:3.5.3")
 
-    // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
-    implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.firebase:firebase-analytics-ktx")
+    // Firebase removido: autenticación ahora es directa contra backend
 }
