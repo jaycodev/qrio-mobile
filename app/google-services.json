@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "481909932344",
+    "project_id": "qrioapp",
+    "storage_bucket": "qrioapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:481909932344:android:c6f6be6d8279d5a77501cd",
+        "android_client_info": {
+          "package_name": "com.cibertec.qriomobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzm7JB15R8xa1dN8pcIqvkTJZK3arT5rc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

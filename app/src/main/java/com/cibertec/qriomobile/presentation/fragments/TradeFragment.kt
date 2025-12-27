@@ -1,6 +1,7 @@
 package com.cibertec.qriomobile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,11 +62,16 @@ class TradeFragment : Fragment() {
     }
 
     private fun loadRestaurants() {
+        Log.d("TradeFragment", "loadRestaurants: Iniciando petición...")
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            when (val res = restaurantRepo.getRestaurants()) {
+            val result = restaurantRepo.getRestaurants()
+            Log.d("TradeFragment", "loadRestaurants: Resultado obtenido: $result")
+            
+            when (result) {
                 is NetworkResult.Success -> {
+                    Log.d("TradeFragment", "loadRestaurants: Éxito. Cantidad: ${result.data.size}")
                     // Asigna placeholder si no hay logo
-                    val items = res.data.map { r ->
+                    val items = result.data.map { r ->
                         RestaurantDto(
                             id = r.id,
                             name = r.name,
@@ -75,12 +81,14 @@ class TradeFragment : Fragment() {
                         )
                     }
                     binding.recyclerComercios.adapter = TradeAdapter(items) { restaurant ->
+                        Log.d("TradeFragment", "Click en restaurante: ${restaurant.name} (ID: ${restaurant.id})")
                         val rid = restaurant.id ?: 0L
                         val action = TradeFragmentDirections.actionTradeFragmentToPromotionFragment(rid)
                         findNavController().navigate(action)
                     }
                 }
                 else -> {
+                    Log.e("TradeFragment", "loadRestaurants: Error o respuesta desconocida")
                     binding.recyclerComercios.adapter = TradeAdapter(emptyList()) { restaurant ->
                         Toast.makeText(
                             requireContext(),
