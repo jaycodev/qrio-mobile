@@ -88,5 +88,16 @@
 
         @GET("/orders/{id}")
         suspend fun getOrderById(@Path("id") id: Long): Response<ApiSuccess<OrderDetailDto>>
+
+        // -----------------------------
+        // OFERTAS / PROMOCIONES
+        // -----------------------------
+        @GET("/offers")
+        suspend fun getOffers(): Response<ApiSuccess<List<com.cibertec.qriomobile.data.model.OfferItemDto>>>
+
+        @GET("/offers/restaurant/{restaurantId}")
+        suspend fun getOffersByRestaurant(
+            @Path("restaurantId") restaurantId: Long
+        ): Response<ApiSuccess<List<com.cibertec.qriomobile.data.model.OfferItemDto>>>
     }
 
