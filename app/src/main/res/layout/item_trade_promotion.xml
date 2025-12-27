@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
-    android:layout_width="wrap_content"
+    android:layout_width="100dp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
@@ -25,11 +25,13 @@
 
     <TextView
         android:id="@+id/txtNombreComercio"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Bembos"
         android:textSize="12sp"
         android:layout_marginTop="6dp"
         android:gravity="center"
-        android:textColor="@color/carbon_black"/>
+        android:textColor="@color/carbon_black"
+        android:ellipsize="end"
+        android:maxLines="2"/>
 </LinearLayout>

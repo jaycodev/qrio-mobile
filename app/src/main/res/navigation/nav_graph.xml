@@ -82,6 +82,14 @@
         android:id="@+id/fragment_catalog"
         android:name="com.cibertec.qriomobile.CatalogFragment"
         android:label="Catalog">
+        <argument
+            android:name="branchId"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <argument
+            android:name="tableNumber"
+            app:argType="integer"
+            android:defaultValue="0" />
         <action
             android:id="@+id/action_catalogFragment_to_detailCatalogFragment"
             app:destination="@id/fragment_detail_catalog" />
@@ -116,12 +124,23 @@
 
     </fragment>
 
+    <!-- CAR / CART -->
+    <fragment
+        android:id="@+id/fragment_car"
+        android:name="com.cibertec.qriomobile.presentation.fragments.CarFragment"
+        android:label="Car" />
+
 
     <!-- PROMOTION LIST -->
     <fragment
         android:id="@+id/fragment_promotion"
         android:name="com.cibertec.qriomobile.PromotionFragment"
         android:label="Promotion">
+
+        <argument
+            android:name="restaurantId"
+            app:argType="long"
+            android:defaultValue="0L" />
 
         <action
             android:id="@+id/action_promotionFragment_to_detailPromotionFragment"
@@ -165,7 +184,11 @@
     <fragment
         android:id="@+id/fragment_trade"
         android:name="com.cibertec.qriomobile.TradeFragment"
-        android:label="Trade" />
+        android:label="Trade">
+        <action
+            android:id="@+id/action_tradeFragment_to_promotionFragment"
+            app:destination="@id/fragment_promotion" />
+    </fragment>
 
     <!-- TRADE -->
     <fragment

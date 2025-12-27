@@ -35,6 +35,7 @@ object AuthRepository {
 
         // Inyectar token a Retrofit
         RetrofitClient.setAuthTokenProvider { jwt }
+    
     }
 
     fun getToken(): String? = jwt

@@ -5,56 +5,65 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.cibertec.qriomobile.R
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.cibertec.qriomobile.cart.CartManager
+import com.cibertec.qriomobile.databinding.FragmentCarBinding
+import com.cibertec.qriomobile.presentation.adapters.CartAdapter
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [CarFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CarFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding: FragmentCarBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var adapter: CartAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_car, container, false)
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentCarBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CarFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CarFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Toolbar back
+        binding.toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
+        // Mesa
+        binding.txtMesa.text = CartManager.tableNumber.toString()
+
+        // Lista carrito
+        adapter = CartAdapter(CartManager.getItems()) { item ->
+            CartManager.remove(item.productId)
+            refreshCart()
+        }
+        binding.rvCarrito.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvCarrito.adapter = adapter
+
+        // Vaciar carrito
+        binding.btnVaciar.setOnClickListener {
+            CartManager.clear()
+            refreshCart()
+        }
+
+        // Continuar (pendiente integrar pedido)
+        binding.btnContinuar.setOnClickListener {
+            // TODO: Integrar creación de pedido usando CartManager.branchId y tableNumber
+        }
+
+        refreshCart()
+    }
+
+    private fun refreshCart() {
+        adapter.submitList(CartManager.getItems())
+        binding.textView.text = CartManager.count().toString()
+        binding.txtTotal.text = "Total: S/ %s".format(String.format("%.2f", CartManager.total()))
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

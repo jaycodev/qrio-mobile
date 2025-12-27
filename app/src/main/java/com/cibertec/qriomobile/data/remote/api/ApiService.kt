@@ -1,3 +1,4 @@
+
     package com.cibertec.qriomobile.data.remote.api
 
     import com.cibertec.qriomobile.data.model.*
@@ -88,3 +89,4 @@
         @GET("/orders/{id}")
         suspend fun getOrderById(@Path("id") id: Long): Response<ApiSuccess<OrderDetailDto>>
     }
+
