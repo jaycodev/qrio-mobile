@@ -1,4 +1,4 @@
-package com.cibertec.qriomobile.presentation.fragments
+package com.cibertec.qriomobile
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

@@ -4,6 +4,8 @@ plugins {
 
 
     id("androidx.navigation.safeargs.kotlin")
+    id("com.google.gms.google-services")
+
 }
 
 
@@ -65,5 +67,10 @@ dependencies {
 
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
+
+    implementation(platform("com.google.firebase:firebase-bom:34.7.0"))
+    implementation("com.google.firebase:firebase-auth")
+
+
 
 }

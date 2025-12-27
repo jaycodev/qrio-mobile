@@ -28,7 +28,7 @@ class CustomerOnboarding(api: ApiService) {
                 // Si es 404, crear; cualquier otro error, propagar
                 if (found.code == 404) {
                     val newCustomer = CustomerDto(
-                        firebase_uid = firebaseUid,
+                        firebaseUid = firebaseUid,
                         name = name,
                         email = email,
                         phone = phone,
