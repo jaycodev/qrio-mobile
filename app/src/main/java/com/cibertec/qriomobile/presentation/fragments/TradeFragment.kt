@@ -1,6 +1,7 @@
 package com.cibertec.qriomobile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,27 +46,26 @@ class TradeFragment : Fragment() {
 
     private fun setupToolbar() {
         binding.toolbarPromos.setNavigationOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            findNavController().navigateUp()
         }
     }
 
     private fun setupRecycler() {
-        // Change from LinearLayoutManager horizontal to GridLayoutManager
         binding.recyclerComercios.layoutManager = GridLayoutManager(requireContext(), 3)
-        
-        binding.recyclerComercios.adapter = TradeAdapter(emptyList()) { restaurant ->
-            val rid = restaurant.id ?: 0L
-            val action = TradeFragmentDirections.actionTradeFragmentToPromotionFragment(rid)
-            findNavController().navigate(action)
-        }
+        // Adaptador inicial vacío
+        binding.recyclerComercios.adapter = TradeAdapter(emptyList()) { }
     }
 
     private fun loadRestaurants() {
+        Log.d("TradeFragment", "loadRestaurants: Iniciando petición...")
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            when (val res = restaurantRepo.getRestaurants()) {
+            val result = restaurantRepo.getRestaurants()
+            Log.d("TradeFragment", "loadRestaurants: Resultado obtenido: $result")
+            
+            when (result) {
                 is NetworkResult.Success -> {
-                    // Asigna placeholder si no hay logo
-                    val items = res.data.map { r ->
+                    Log.d("TradeFragment", "loadRestaurants: Éxito. Cantidad: ${result.data.size}")
+                    val items = result.data.map { r ->
                         RestaurantDto(
                             id = r.id,
                             name = r.name,
@@ -76,18 +76,14 @@ class TradeFragment : Fragment() {
                     }
                     binding.recyclerComercios.adapter = TradeAdapter(items) { restaurant ->
                         val rid = restaurant.id ?: 0L
-                        val action = TradeFragmentDirections.actionTradeFragmentToPromotionFragment(rid)
+                        // Navegar a la lista de sucursales (BranchListFragment)
+                        val action = TradeFragmentDirections.actionTradeFragmentToBranchListFragment(rid)
                         findNavController().navigate(action)
                     }
                 }
                 else -> {
-                    binding.recyclerComercios.adapter = TradeAdapter(emptyList()) { restaurant ->
-                        Toast.makeText(
-                            requireContext(),
-                            "Sin restaurantes",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                    Log.e("TradeFragment", "loadRestaurants: Error o respuesta desconocida")
+                    Toast.makeText(requireContext(), "Sin restaurantes", Toast.LENGTH_SHORT).show()
                 }
             }
         }

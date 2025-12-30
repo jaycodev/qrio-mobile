@@ -11,8 +11,6 @@ import com.cibertec.qriomobile.databinding.FragmentHomeBinding
 import com.cibertec.qriomobile.data.model.PromoUi
 import com.cibertec.qriomobile.presentation.adapters.HomeAdapter
 import com.cibertec.qriomobile.R
-import com.journeyapps.barcodescanner.ScanContract
-import com.journeyapps.barcodescanner.ScanOptions
 import android.net.Uri
 
 class HomeFragment : Fragment() {
@@ -61,7 +59,9 @@ class HomeFragment : Fragment() {
         }
 
         binding.btnCatalogo.setOnClickListener {
-            launchQrScanner()
+            // Se cambió la lógica del QR a selección manual en Trade o CatalogFragment
+            // Navegamos al TradeFragment para seleccionar Comercio -> Sucursal
+            findNavController().navigate(R.id.action_homeFragment_to_tradeFragment)
         }
 
         binding.btnPromos.setOnClickListener {
@@ -71,41 +71,5 @@ class HomeFragment : Fragment() {
         binding.btnProfile.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
         }
-    }
-
-    private val barcodeLauncher = registerForActivityResult(ScanContract()) { result ->
-        val contents = result.contents ?: return@registerForActivityResult
-        parseBranchAndTable(contents)?.let { (branchId, tableNumber) ->
-            val action = HomeFragmentDirections.actionHomeFragmentToCatalogFragment(branchId, tableNumber)
-            findNavController().navigate(action)
-        }
-    }
-
-    private fun launchQrScanner() {
-        val options = ScanOptions()
-            .setDesiredBarcodeFormats(ScanOptions.QR_CODE)
-            .setPrompt("Escanea el QR de la sucursal")
-            .setBeepEnabled(true)
-            .setOrientationLocked(false)
-        barcodeLauncher.launch(options)
-    }
-
-    private fun parseBranchAndTable(text: String): Pair<Long, Int>? {
-        // Soportar formatos simples: dos números en cualquier formato
-        // Ejemplos válidos: "123,7", "branch=123;table=7", "123|7", "Suc:123 Mesa:7"
-        val nums = Regex("\\d+").findAll(text).map { it.value.toLong() }.toList()
-        if (nums.size >= 2) {
-            val branchId = nums[0]
-            val tableNumber = nums[1].toInt()
-            return Pair(branchId, tableNumber)
-        }
-
-        // Fallback: intentar parsear URL con query params
-        runCatching { Uri.parse(text) }.getOrNull()?.let { uri ->
-            val b = (uri.getQueryParameter("branch") ?: uri.getQueryParameter("branchId"))?.toLongOrNull()
-            val t = (uri.getQueryParameter("table") ?: uri.getQueryParameter("tableNumber"))?.toIntOrNull()
-            if (b != null && t != null) return Pair(b, t)
-        }
-        return null
     }
 }

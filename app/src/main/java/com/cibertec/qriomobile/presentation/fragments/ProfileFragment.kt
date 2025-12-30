@@ -13,7 +13,6 @@ import com.cibertec.qriomobile.data.RetrofitClient
 
 import com.cibertec.qriomobile.data.model.CustomerDto
 import com.cibertec.qriomobile.databinding.FragmentProfileBinding
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
@@ -85,7 +84,6 @@ class ProfileFragment : Fragment() {
     }
 
     private fun logoutAndRedirect() {
-        FirebaseAuth.getInstance().signOut()
         AuthRepository.logout()
         findNavController().navigate(R.id.loginFragment)
     }

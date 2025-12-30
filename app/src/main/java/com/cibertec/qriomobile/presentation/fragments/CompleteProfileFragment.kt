@@ -14,7 +14,6 @@ import com.cibertec.qriomobile.data.model.CustomerDto
 import com.cibertec.qriomobile.data.repository.CustomerRepository
 import com.cibertec.qriomobile.data.remote.NetworkResult
 import com.cibertec.qriomobile.databinding.FragmentCompleteProfileBinding
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 class CompleteProfileFragment : Fragment() {
@@ -22,7 +21,7 @@ class CompleteProfileFragment : Fragment() {
     private var _binding: FragmentCompleteProfileBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var auth: FirebaseAuth
+    // private lateinit var auth: FirebaseAuth // Eliminado porque ya no usas Firebase
     private lateinit var customerRepository: CustomerRepository
 
     override fun onCreateView(
@@ -37,7 +36,7 @@ class CompleteProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        auth = FirebaseAuth.getInstance()
+        // auth = FirebaseAuth.getInstance() // Eliminado
 
         // Inicializa tu repositorio con RetrofitClient
         customerRepository = CustomerRepository(RetrofitClient.api)
@@ -86,4 +85,3 @@ class CompleteProfileFragment : Fragment() {
         _binding = null
     }
 }
-

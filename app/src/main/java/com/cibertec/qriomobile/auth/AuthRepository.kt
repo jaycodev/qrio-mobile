@@ -23,8 +23,13 @@ object AuthRepository {
     }
 
     fun saveAuth(auth: AuthResponse) {
-        jwt = auth.token
-        customerId = auth.customerId
+        saveToken(auth.token, auth.customerId)
+    }
+
+    // Nuevo método manual para bypass o uso genérico
+    fun saveToken(token: String, cId: Long?) {
+        jwt = token
+        customerId = cId
 
         // Guardar en SharedPreferences
         prefs?.edit()?.apply {
@@ -35,7 +40,6 @@ object AuthRepository {
 
         // Inyectar token a Retrofit
         RetrofitClient.setAuthTokenProvider { jwt }
-    
     }
 
     fun getToken(): String? = jwt
