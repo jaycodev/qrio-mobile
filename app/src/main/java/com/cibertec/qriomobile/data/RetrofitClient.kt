@@ -1,5 +1,6 @@
 package com.cibertec.qriomobile.data
 
+import com.cibertec.qriomobile.auth.AuthRepository
 import com.cibertec.qriomobile.data.remote.api.ApiService
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -9,6 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
+
     private const val BASE_URL = "https://api-qrio.onrender.com"
 
     // Proveedor de token (inyectar desde capa de auth Firebase)
@@ -22,7 +24,8 @@ object RetrofitClient {
     private val authInterceptor = object : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
             val original = chain.request()
-            val token = authTokenProvider?.invoke()
+            // Primero intenta con el proveedor inyectado, sino usa AuthRepository directamente
+            val token = authTokenProvider?.invoke() ?: AuthRepository.getToken()
             val request = if (!token.isNullOrBlank()) {
                 original.newBuilder()
                     .addHeader("Authorization", "Bearer $token")
@@ -62,6 +65,6 @@ object RetrofitClient {
 
     // Enlazar proveedor de token con AuthManager automáticamente
     init {
-        setAuthTokenProvider { com.cibertec.qriomobile.auth.AuthManager.getToken() }
+        setAuthTokenProvider { com.cibertec.qriomobile.auth.AuthRepository.getToken() }
     }
 }

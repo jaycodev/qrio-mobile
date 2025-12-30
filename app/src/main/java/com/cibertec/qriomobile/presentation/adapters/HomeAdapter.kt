@@ -47,7 +47,13 @@ class HomeAdapter(
             currentPromo = promo
             txtNombre.text = promo.name
             txtPrecio.text = "S/ ${promo.priceFinal}"
-            img.setImageResource(promo.imageUrl)
+            
+            // Usamos Glide para cargar imagen si es posible, o placeholder
+            if (promo.imageUrl != 0) {
+                 img.setImageResource(promo.imageUrl)
+            } else {
+                 img.setImageResource(R.drawable.descarga) // Imagen por defecto
+            }
         }
     }
 }

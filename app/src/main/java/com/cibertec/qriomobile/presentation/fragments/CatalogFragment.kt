@@ -42,6 +42,10 @@ class CatalogFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.toolbarPromos.setNavigationOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
         binding.recyclerComercios.layoutManager =
             GridLayoutManager(requireContext(), 2)
         adapter = CatalogAdapter(emptyList()) { product ->
@@ -60,6 +64,35 @@ class CatalogFragment : Fragment() {
         if (branchId > 0) {
             loadProducts(branchId)
         }
+
+        // Navegar al chat de IA
+        binding.fabAiChat.setOnClickListener {
+            val action = CatalogFragmentDirections.actionCatalogToChat(branchId)
+            findNavController().navigate(action)
+        }
+
+        // Navegar al Carrito (Nuevo)
+        binding.btnCartContainer.setOnClickListener {
+            findNavController().navigate(R.id.fragment_car)
+        }
+
+        // Actualizar Badge inicialmente
+        updateCartBadge()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateCartBadge()
+    }
+
+    private fun updateCartBadge() {
+        val count = CartManager.count()
+        if (count > 0) {
+            binding.txtCartBadge.text = count.toString()
+            binding.txtCartBadge.visibility = View.VISIBLE
+        } else {
+            binding.txtCartBadge.visibility = View.GONE
+        }
     }
 
     private fun onProductClicked(product: ProductDto) {
@@ -70,7 +103,8 @@ class CatalogFragment : Fragment() {
                     nombre = product.name,
                     descripcion = product.description ?: "",
                     precio = product.price.toFloat(),
-                    imagen = product.imageRes ?: 0
+                    imagen = product.imageRes ?: 0,
+                    imageUrl = product.imageUrl
                 )
 
         findNavController().navigate(action)

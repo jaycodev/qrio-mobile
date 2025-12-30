@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.cibertec.qriomobile.databinding.FragmentDetailCatalogBinding
 import com.cibertec.qriomobile.cart.CartManager
+import com.bumptech.glide.Glide
 
 
 class DetailCatalogFragment : Fragment() {
@@ -35,7 +36,17 @@ class DetailCatalogFragment : Fragment() {
         binding.txtNombreDetalle.text = args.nombre
         binding.txtDescripcionDetalle.text = args.descripcion
         binding.txtPrecioDetalle.text = "S/ ${args.precio}"
-        binding.imgDetalleProducto.setImageResource(args.imagen)
+
+        // Cargar imagen: Prioridad URL, luego recurso local
+        if (!args.imageUrl.isNullOrBlank()) {
+            Glide.with(this)
+                .load(args.imageUrl)
+                .placeholder(R.drawable.empty)
+                .error(R.drawable.empty)
+                .into(binding.imgDetalleProducto)
+        } else {
+            binding.imgDetalleProducto.setImageResource(args.imagen)
+        }
 
         // Toolbar back
         binding.toolbarPromos.setNavigationOnClickListener {
@@ -60,13 +71,14 @@ class DetailCatalogFragment : Fragment() {
         // Comprar
         binding.btnComprarDetalle.setOnClickListener {
             val args = DetailCatalogFragmentArgs.fromBundle(requireArguments())
-            // Agregar al carrito
+            // Agregar al carrito con URL de imagen si existe
             CartManager.add(
                 productId = args.id,
                 name = args.nombre,
                 price = args.precio.toDouble(),
                 quantity = cantidad,
-                imageRes = args.imagen
+                imageRes = args.imagen,
+                imageUrl = args.imageUrl // <--- Pasamos la URL al carrito
             )
             // Ir al carrito
             findNavController().navigate(R.id.fragment_car)

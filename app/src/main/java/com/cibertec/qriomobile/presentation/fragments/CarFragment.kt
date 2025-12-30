@@ -51,7 +51,17 @@ class CarFragment : Fragment() {
             refreshCart()
         }
 
-        // Continuar
+        // Seguir comprando: Volver al catálogo (fragment_catalog)
+        binding.btnSeguirComprando.setOnClickListener {
+            // Intentamos volver hasta el fragmento del catálogo
+            val popped = findNavController().popBackStack(R.id.fragment_catalog, false)
+            if (!popped) {
+                // Si por alguna razón no está en la pila, volvemos uno atrás
+                findNavController().popBackStack()
+            }
+        }
+
+        // Continuar con la compra (avanza al resumen)
         binding.btnContinuar.setOnClickListener {
             if (CartManager.count() == 0) {
                 Toast.makeText(context, "El carrito está vacío", Toast.LENGTH_SHORT).show()
