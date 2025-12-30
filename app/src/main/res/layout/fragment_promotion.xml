@@ -50,12 +50,47 @@
                 android:textSize="14sp"/>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- CARRUSEL -->
+        <!-- SELECCIONAR COMERCIO (ARRIBA) -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Selecciona un comercio"
+            android:textColor="@color/carbon_black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:clipToPadding="false"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/layoutCategorias"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingBottom="12dp">
+                
+                <!-- Los comercios se inflan aquí dinámicamente -->
+                
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <!-- CARRUSEL (AL MEDIO) -->
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/carruselPromos"
             android:layout_width="match_parent"
             android:layout_height="180dp"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="16dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"/>
 
         <!-- INDICADORES DEL CARRUSEL -->
         <LinearLayout
@@ -67,78 +102,21 @@
             android:layout_gravity="center"
             android:layout_marginTop="8dp"/>
 
-        <!-- CATEGORÍAS -->
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="Comercio"
-            android:textColor="@color/carbon_black"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:scrollbars="none">
-
-            <LinearLayout
-                android:id="@+id/layoutCategorias"
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical">
-
-                <!-- EJEMPLO DE CATEGORÍA -->
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:src="@drawable/ic_company"
-                        android:background="@drawable/circle_background"
-                        android:padding="10dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="6dp"
-                        android:text="Bembos"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-            </LinearLayout>
-        </HorizontalScrollView>
-
-        <!-- SECCIÓN DE PRODUCTOS -->
+        <!-- SECCIÓN DE TODAS LAS OFERTAS (ABAJO) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:layout_marginTop="8dp">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Promos destacadas 🔥"
+                android:text="Todas las ofertas"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ver todo"
-                android:textSize="14sp"
-                android:textColor="@color/gold_dark"/>
         </LinearLayout>
 
 
@@ -148,6 +126,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
+            android:nestedScrollingEnabled="false"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2"/>
 

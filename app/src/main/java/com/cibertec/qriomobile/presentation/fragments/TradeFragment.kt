@@ -75,6 +75,7 @@ class TradeFragment : Fragment() {
                         )
                     }
                     binding.recyclerComercios.adapter = TradeAdapter(items) { restaurant ->
+                        Log.d("TradeFragment", "Click en restaurante: ${restaurant.name} (ID: ${restaurant.id})")
                         val rid = restaurant.id ?: 0L
                         // Navegar a la lista de sucursales (BranchListFragment)
                         val action = TradeFragmentDirections.actionTradeFragmentToBranchListFragment(rid)

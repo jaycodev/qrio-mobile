@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.cibertec.qriomobile.auth.AuthRepository
 import com.cibertec.qriomobile.data.RetrofitClient
 import com.cibertec.qriomobile.databinding.FragmentLoginBinding
+import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
 

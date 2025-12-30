@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
 
     id("androidx.navigation.safeargs.kotlin")
+    // Firebase plugin removido
 }
 
 val localProperties = Properties()

@@ -12,6 +12,8 @@ import com.cibertec.qriomobile.data.model.PromoUi
 import com.cibertec.qriomobile.presentation.adapters.HomeAdapter
 import com.cibertec.qriomobile.R
 import android.net.Uri
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
@@ -70,6 +72,12 @@ class HomeFragment : Fragment() {
 
         binding.btnProfile.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
+        }
+
+        // Mantener navegación con click normal; usar long click para cerrar sesión
+        binding.btnProfile.setOnLongClickListener {
+            performLogout()
+            true
         }
     }
 }
