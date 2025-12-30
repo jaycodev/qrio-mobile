@@ -1,4 +1,4 @@
-package com.cibertec.qriomobile
+package com.cibertec.qriomobile.presentation.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -18,6 +18,7 @@ import com.cibertec.qriomobile.data.RetrofitClient
 import com.cibertec.qriomobile.data.remote.NetworkResult
 import com.cibertec.qriomobile.data.remote.api.ApiService
 import com.cibertec.qriomobile.data.repository.RestaurantRepository
+import kotlinx.coroutines.launch
 
 class TradeFragment : Fragment() {
 
@@ -58,7 +59,7 @@ class TradeFragment : Fragment() {
 
     private fun loadRestaurants() {
         Log.d("TradeFragment", "loadRestaurants: Iniciando petición...")
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.lifecycleScope.launch {
             val result = restaurantRepo.getRestaurants()
             Log.d("TradeFragment", "loadRestaurants: Resultado obtenido: $result")
             

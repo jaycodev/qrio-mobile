@@ -80,4 +80,17 @@ class HomeFragment : Fragment() {
             true
         }
     }
+
+    private fun performLogout() {
+        // TODO: Limpiar datos de sesión aquí (ej. SharedPreferences, AuthManager, etc.)
+        
+        // Navegar al login y limpiar el backstack para que no se pueda volver atrás
+        findNavController().navigate(
+            R.id.loginFragment,
+            null,
+            androidx.navigation.NavOptions.Builder()
+                .setPopUpTo(R.id.nav_graph, true) // Limpia todo el historial
+                .build()
+        )
+    }
 }

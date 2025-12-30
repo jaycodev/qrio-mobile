@@ -5,19 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.cibertec.qriomobile.data.model.ProductDto
 import com.cibertec.qriomobile.databinding.FragmentCatalogBinding
 import com.cibertec.qriomobile.presentation.adapters.CatalogAdapter
-import androidx.lifecycle.lifecycleScope
 import com.cibertec.qriomobile.data.remote.NetworkResult
 import com.cibertec.qriomobile.data.RetrofitClient
 import com.cibertec.qriomobile.data.remote.api.ApiService
 import com.cibertec.qriomobile.data.repository.ProductRepository
 import com.cibertec.qriomobile.R
 import com.cibertec.qriomobile.cart.CartManager
+import kotlinx.coroutines.launch
 
 
 class CatalogFragment : Fragment() {
@@ -111,14 +114,16 @@ class CatalogFragment : Fragment() {
     }
 
     private fun loadProducts(branchId: Long) {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            when (val res = productRepo.getProductsByBranch(branchId)) {
-                is NetworkResult.Success -> adapter = CatalogAdapter(res.data) { product -> onProductClicked(product) }.also {
-                    binding.recyclerComercios.adapter = it
-                }
-                else -> {
-                    adapter = CatalogAdapter(emptyList()) { product -> onProductClicked(product) }.also {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                when (val res = productRepo.getProductsByBranch(branchId)) {
+                    is NetworkResult.Success -> adapter = CatalogAdapter(res.data) { product -> onProductClicked(product) }.also {
                         binding.recyclerComercios.adapter = it
+                    }
+                    else -> {
+                        adapter = CatalogAdapter(emptyList()) { product -> onProductClicked(product) }.also {
+                            binding.recyclerComercios.adapter = it
+                        }
                     }
                 }
             }
