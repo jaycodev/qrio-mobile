@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
@@ -25,6 +27,7 @@ import com.cibertec.qriomobile.data.repository.OfferRepository
 import com.cibertec.qriomobile.databinding.FragmentPromotionBinding
 import com.cibertec.qriomobile.presentation.adapters.OfferCarouselAdapter
 import com.cibertec.qriomobile.presentation.adapters.OfferGridAdapter
+import kotlinx.coroutines.launch
 
 class PromotionFragment : Fragment() {
 
@@ -100,10 +103,12 @@ class PromotionFragment : Fragment() {
     }
 
     private fun loadRestaurants() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            when (val res = restaurantRepo.getRestaurants()) {
-                is NetworkResult.Success -> renderRestaurantChips(res.data)
-                else -> { /* sin restaurantes */ }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                when (val res = restaurantRepo.getRestaurants()) {
+                    is NetworkResult.Success -> renderRestaurantChips(res.data)
+                    else -> { /* sin restaurantes */ }
+                }
             }
         }
     }
@@ -135,18 +140,20 @@ class PromotionFragment : Fragment() {
 
         if (restaurantId == null) return
 
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            Log.d("PromotionFragment", "Fetching offers by restaurant from repo...")
-            when (val res = offerRepo.getOffersByRestaurant(restaurantId)) {
-                is NetworkResult.Success -> {
-                    Log.d("PromotionFragment", "Offers fetched successfully for restaurant $restaurantId. Count: ${res.data.size}")
-                    carouselAdapter.submitList(res.data)
-                    gridAdapter.submitList(res.data)
-                }
-                else -> {
-                    Log.e("PromotionFragment", "Failed to fetch offers or empty result")
-                    carouselAdapter.submitList(emptyList())
-                    gridAdapter.submitList(emptyList())
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                Log.d("PromotionFragment", "Fetching offers by restaurant from repo...")
+                when (val res = offerRepo.getOffersByRestaurant(restaurantId)) {
+                    is NetworkResult.Success -> {
+                        Log.d("PromotionFragment", "Offers fetched successfully for restaurant $restaurantId. Count: ${res.data.size}")
+                        carouselAdapter.submitList(res.data)
+                        gridAdapter.submitList(res.data)
+                    }
+                    else -> {
+                        Log.e("PromotionFragment", "Failed to fetch offers or empty result")
+                        carouselAdapter.submitList(emptyList())
+                        gridAdapter.submitList(emptyList())
+                    }
                 }
             }
         }

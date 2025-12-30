@@ -65,10 +65,8 @@
             @Path("id") id: Long
         ): Response<ApiSuccess<CustomerDto>>
 
-        @GET("/auth/me-customer")
-        suspend fun getMyProfile(
-            @Header("Authorization") token: String
-        ): Response<CustomerDto>
+        @GET("/auth/me")
+        suspend fun getMe(): Response<com.cibertec.qriomobile.data.model.MeResponse>
 
 
         // -----------------------------

@@ -43,18 +43,12 @@ class ProfileFragment : Fragment() {
     }
 
     private fun loadProfile() {
-        val token = AuthRepository.getToken() ?: run {
-            Toast.makeText(requireContext(), "Usuario no autenticado", Toast.LENGTH_SHORT).show()
-            logoutAndRedirect()
-            return
-        }
-
         lifecycleScope.launch {
             try {
-                val response = RetrofitClient.api.getMyProfile("Bearer $token")
+                val response = RetrofitClient.api.getMe()
                 if (response.isSuccessful) {
-                    val customer = response.body()
-                    if (customer != null) renderProfile(customer)
+                    val me = response.body()
+                    if (me != null) renderProfile(me)
                     else Toast.makeText(requireContext(), "Perfil vacío", Toast.LENGTH_SHORT).show()
                 } else if (response.code() == 401) {
                     Toast.makeText(requireContext(), "Sesión expirada", Toast.LENGTH_SHORT).show()
@@ -69,11 +63,16 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun renderProfile(customer: CustomerDto) {
-        binding.txtUserName.text = customer.name
-        binding.txtUserEmail.text = customer.email
-        binding.txtEmail.text = "📧 Email: ${customer.email}"
-        binding.txtPhone.text = "📞 Teléfono: ${customer.phone ?: "No registrado"}"
+    private fun renderProfile(me: com.cibertec.qriomobile.data.model.MeResponse) {
+        binding.txtUserName.text = me.name ?: "Usuario"
+        binding.txtUserEmail.text = me.email ?: "—"
+        binding.txtEmail.text = "📧 Email: ${me.email ?: "—"}"
+        val infoExtra = buildString {
+            if (!me.role.isNullOrBlank()) append("👤 Rol: ${me.role}\n")
+            if (me.restaurantId != null) append("🍽️ Restaurante ID: ${me.restaurantId}\n")
+            if (me.branchId != null) append("🏬 Sucursal ID: ${me.branchId}")
+        }
+        binding.txtPhone.text = if (infoExtra.isNotBlank()) infoExtra else "📞 Teléfono: No registrado"
     }
 
     private fun setupActions() {

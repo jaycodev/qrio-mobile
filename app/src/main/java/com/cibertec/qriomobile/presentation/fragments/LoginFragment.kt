@@ -8,8 +8,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.cibertec.qriomobile.auth.AuthRepository
+import com.cibertec.qriomobile.auth.AuthApi
+import com.cibertec.qriomobile.auth.LoginRequest
 import com.cibertec.qriomobile.data.RetrofitClient
 import com.cibertec.qriomobile.databinding.FragmentLoginBinding
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
@@ -44,19 +47,41 @@ class LoginFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            // LOGIN MANUAL / BYPASS (Sin Firebase)
-            // Aquí simulamos un token y un ID de cliente
-            // Si tu backend requiere un token válido, deberás generarlo o implementar auth real contra tu backend aquí.
-            
-            // Simulamos token
-            val dummyToken = "dummy_token_bypass_no_firebase"
-            val dummyCustomerId = 1L 
-
-            // Guardamos en AuthRepository (SharedPreferences)
-            AuthRepository.saveToken(dummyToken, dummyCustomerId)
-
-            Toast.makeText(requireContext(), "Sesión iniciada (Local)", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.homeFragment)
+            lifecycleScope.launch {
+                try {
+                    val authApi = RetrofitClient.create(AuthApi::class.java)
+                    // Login de cliente contra backend
+                    val resp = authApi.customerLogin(LoginRequest(email, password))
+                    if (resp.isSuccessful) {
+                        val token = resp.body()?.accessToken
+                        if (!token.isNullOrBlank()) {
+                            // Persistir token
+                            AuthRepository.saveToken(token, null)
+                            // Opcional: obtener info del token para cachear customerId
+                            val info = authApi.tokenInfo()
+                            val cId = if (info.isSuccessful) info.body()?.customerId else null
+                            if (cId != null) {
+                                AuthRepository.saveToken(token, cId)
+                            }
+                            Toast.makeText(requireContext(), "Sesión iniciada", Toast.LENGTH_SHORT).show()
+                            findNavController().navigate(R.id.homeFragment)
+                        } else {
+                            Toast.makeText(requireContext(), "Respuesta inválida del servidor", Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        val code = resp.code()
+                        val msg = when (code) {
+                            401 -> "Credenciales inválidas"
+                            403 -> "Usuario inactivo"
+                            else -> "Error de autenticación ($code)"
+                        }
+                        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Toast.makeText(requireContext(), "Error de red", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 

@@ -206,7 +206,7 @@
     <!-- TRADE -->
     <fragment
         android:id="@+id/fragment_trade"
-        android:name="com.cibertec.qriomobile.TradeFragment"
+        android:name="com.cibertec.qriomobile.presentation.fragments.TradeFragment"
         android:label="Trade"
         tools:layout="@layout/fragment_trade">
         <action
