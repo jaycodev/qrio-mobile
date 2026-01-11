@@ -10,5 +10,6 @@ data class CreateOrderRequestDto(
     val total: BigDecimal,
     val people: Int,
     val orderDate: String? = null, // Agregado por si el server lo requiere
-    val items: List<CreateOrderItemDto>
+    val items: List<CreateOrderItemDto>,
+    val paymentIntentId: String? = null
 )

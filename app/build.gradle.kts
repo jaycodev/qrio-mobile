@@ -5,7 +5,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
 
     id("androidx.navigation.safeargs.kotlin")
-    // Firebase plugin removido
 }
 
 val localProperties = Properties()
@@ -27,14 +26,16 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // Cargar API KEY de local.properties
         val key = localProperties["geminiApiKey"] as String? ?: ""
         buildConfigField("String", "GEMINI_API_KEY", "\"$key\"")
 
-        // Configurar BASE_URL desde local.properties con fallback
         val apiBaseUrl = localProperties["apiBaseUrl"] as String?
             ?: "https://api-qrio.onrender.com/"
         buildConfigField("String", "BASE_URL", "\"$apiBaseUrl\"")
+
+        val stripeKey = localProperties["stripePublishableKey"] as String?
+            ?: "pk_test_placeholder"
+        buildConfigField("String", "STRIPE_PUBLISHABLE_KEY", "\"$stripeKey\"")
     }
 
     buildTypes {
@@ -81,10 +82,11 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
 
-    // QR scanning
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     implementation("com.google.zxing:core:3.5.3")
 
-    // Google AI SDK (Gemini)
     implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
+
+    // Actualizado a 21.0.0 para soportar el método .present()
+    implementation("com.stripe:stripe-android:21.0.0")
 }

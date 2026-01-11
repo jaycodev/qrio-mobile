@@ -1,5 +1,6 @@
 package com.cibertec.qriomobile.data
 
+import android.util.Log
 import com.cibertec.qriomobile.BuildConfig
 import com.cibertec.qriomobile.auth.AuthRepository
 import com.cibertec.qriomobile.data.remote.api.ApiService
@@ -24,6 +25,9 @@ object RetrofitClient {
     private val authInterceptor = object : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
             val original = chain.request()
+
+            Log.d("API", "Request a: ${original.url}")
+
             // Primero intenta con el proveedor inyectado, sino usa AuthRepository directamente
             val token = authTokenProvider?.invoke() ?: AuthRepository.getToken()
             val request = if (!token.isNullOrBlank()) {

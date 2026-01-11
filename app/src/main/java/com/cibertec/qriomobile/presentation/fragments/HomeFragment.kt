@@ -14,6 +14,9 @@ import com.cibertec.qriomobile.R
 import android.net.Uri
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanOptions
+import android.widget.Toast
 
 class HomeFragment : Fragment() {
 
@@ -61,9 +64,8 @@ class HomeFragment : Fragment() {
         }
 
         binding.btnCatalogo.setOnClickListener {
-            // Se cambió la lógica del QR a selección manual en Trade o CatalogFragment
-            // Navegamos al TradeFragment para seleccionar Comercio -> Sucursal
-            findNavController().navigate(R.id.action_homeFragment_to_tradeFragment)
+            // Nueva lógica: Escanear QR y navegar al catálogo con branchId y mesa
+            startQrScan()
         }
 
         binding.btnPromos.setOnClickListener {
@@ -92,5 +94,60 @@ class HomeFragment : Fragment() {
                 .setPopUpTo(R.id.nav_graph, true) // Limpia todo el historial
                 .build()
         )
+    }
+
+    // Launcher para escanear QR usando ZXing Embedded
+    private val barcodeLauncher = registerForActivityResult(ScanContract()) { result ->
+        if (result.contents != null) {
+            val text = result.contents
+            val parsed = parseQrPayload(text)
+            if (parsed != null) {
+                val (branchId, tableNumber) = parsed
+                val action = HomeFragmentDirections
+                    .actionHomeFragmentToCatalogFragment(branchId = branchId, tableNumber = tableNumber)
+                findNavController().navigate(action)
+            } else {
+                Toast.makeText(requireContext(), "QR inválido: $text", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            // Cancelado sin contenido
+        }
+    }
+
+    private fun startQrScan() {
+        val options = ScanOptions().apply {
+            setDesiredBarcodeFormats(ScanOptions.QR_CODE)
+            setPrompt("Escanea el QR de la mesa")
+            setBeepEnabled(true)
+            setOrientationLocked(true)
+        }
+        barcodeLauncher.launch(options)
+    }
+
+    // Intenta parsear formatos soportados:
+    // 1) Texto estilo "QR_BR{branch}_T{table}_{...}"
+    // 2) URI estilo "qrio://table?branchId=1&table=2"
+    private fun parseQrPayload(payload: String): Pair<Long, Int>? {
+        // Caso URI
+        try {
+            val uri = Uri.parse(payload)
+            if (uri.scheme == "qrio" && uri.host == "table") {
+                val b = uri.getQueryParameter("branchId")?.toLongOrNull()
+                val t = uri.getQueryParameter("table")?.toIntOrNull()
+                if (b != null && b > 0 && t != null && t > 0) return b to t
+            }
+        } catch (_: Exception) { }
+
+        // Caso patrón QR_BR{branch}_T{table}_SUF
+        val regex = Regex("^QR_BR(\\d+)_T(\\d+)_.*$")
+        val m = regex.matchEntire(payload)
+        if (m != null) {
+            val branchId = m.groupValues[1].toLongOrNull()
+            val tableNum = m.groupValues[2].toIntOrNull()
+            if (branchId != null && branchId > 0 && tableNum != null && tableNum > 0) {
+                return branchId to tableNum
+            }
+        }
+        return null
     }
 }

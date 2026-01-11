@@ -4,13 +4,14 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient_login">
 
-    <!-- 👤 Ícono perfil en esquina superior derecha -->
+    <!-- 👤 Ícono perfil: bajado con un margen superior de 48dp -->
     <ImageView
         android:id="@+id/btnProfile"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:src="@drawable/ic_user"
-        android:layout_margin="16dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="24dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
 

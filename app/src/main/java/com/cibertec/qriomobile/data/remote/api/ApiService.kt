@@ -100,5 +100,10 @@
         suspend fun getOffersByRestaurant(
             @Path("restaurantId") restaurantId: Long
         ): Response<ApiSuccess<List<com.cibertec.qriomobile.data.model.OfferItemDto>>>
+        // -----------------------------
+        // PAGOS (Stripe)
+        // -----------------------------
+        @POST("/payments/intent")
+        suspend fun createPaymentIntent(@Body request: PaymentIntentRequestDto): Response<PaymentIntentResponseDto>
     }
 

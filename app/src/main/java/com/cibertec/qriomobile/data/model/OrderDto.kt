@@ -11,7 +11,8 @@ data class OrderDto(
     val status: String,
     val total: BigDecimal,
     val people: Int,
-    val itemCount: Long
+    val itemCount: Long,
+    val stripeClientSecret: String? = null // Agregado para Stripe
 ) {
     data class Table(
         val id: Long,
