@@ -81,6 +81,9 @@
         // -----------------------------
         // PEDIDOS (Orders)
         // -----------------------------
+        @GET("/orders/filter-options")
+        suspend fun getOrderFilterOptions(@Query("branchId") branchId: Long): Response<ApiSuccess<OrderFilterOptionsDto>>
+
         @POST("/orders")
         suspend fun createOrder(@Body order: CreateOrderRequestDto): Response<ApiSuccess<OrderDto>>
 

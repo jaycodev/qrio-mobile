@@ -30,6 +30,11 @@ android {
         // Cargar API KEY de local.properties
         val key = localProperties["geminiApiKey"] as String? ?: ""
         buildConfigField("String", "GEMINI_API_KEY", "\"$key\"")
+
+        // Configurar BASE_URL desde local.properties con fallback
+        val apiBaseUrl = localProperties["apiBaseUrl"] as String?
+            ?: "https://api-qrio.onrender.com/"
+        buildConfigField("String", "BASE_URL", "\"$apiBaseUrl\"")
     }
 
     buildTypes {

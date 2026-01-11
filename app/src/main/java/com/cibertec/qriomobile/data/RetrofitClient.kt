@@ -1,5 +1,6 @@
 package com.cibertec.qriomobile.data
 
+import com.cibertec.qriomobile.BuildConfig
 import com.cibertec.qriomobile.auth.AuthRepository
 import com.cibertec.qriomobile.data.remote.api.ApiService
 import okhttp3.Interceptor
@@ -11,7 +12,6 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
 
-    private const val BASE_URL = "https://api-qrio.onrender.com/"
 
     // Proveedor de token (inyectar desde capa de auth Firebase)
     @Volatile
@@ -46,7 +46,7 @@ object RetrofitClient {
 
     val api: ApiService by lazy {
         Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.BASE_URL)
             .client(httpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -56,7 +56,7 @@ object RetrofitClient {
     // Exponer creación genérica de servicios (e.g., AuthApi)
     fun <T> create(service: Class<T>): T {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.BASE_URL)
             .client(httpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

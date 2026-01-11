@@ -1,4 +1,4 @@
-package com.cibertec.qriomobile
+package com.cibertec.qriomobile.presentation.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

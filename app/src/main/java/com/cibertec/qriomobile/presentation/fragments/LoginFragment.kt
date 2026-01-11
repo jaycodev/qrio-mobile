@@ -1,6 +1,7 @@
 package com.cibertec.qriomobile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,34 +53,43 @@ class LoginFragment : Fragment() {
                     val authApi = RetrofitClient.create(AuthApi::class.java)
                     // Login de cliente contra backend
                     val resp = authApi.customerLogin(LoginRequest(email, password))
+                    
                     if (resp.isSuccessful) {
-                        val token = resp.body()?.accessToken
+                        val body = resp.body()
+                        Log.d("LOGIN_DEBUG", "Cuerpo recibido: $body") // <--- PARA VER QUÉ LLEGA
+
+                        val token = body?.token
                         if (!token.isNullOrBlank()) {
                             // Persistir token
                             AuthRepository.saveToken(token, null)
-                            // Opcional: obtener info del token para cachear customerId
+                            
+                            // Opcional: obtener info del token
                             val info = authApi.tokenInfo()
                             val cId = if (info.isSuccessful) info.body()?.customerId else null
                             if (cId != null) {
                                 AuthRepository.saveToken(token, cId)
                             }
+                            
                             Toast.makeText(requireContext(), "Sesión iniciada", Toast.LENGTH_SHORT).show()
                             findNavController().navigate(R.id.homeFragment)
                         } else {
+                            Log.e("LOGIN_DEBUG", "Token es null o vacío. Revisa si el campo en el JSON se llama 'accessToken'")
                             Toast.makeText(requireContext(), "Respuesta inválida del servidor", Toast.LENGTH_SHORT).show()
                         }
                     } else {
-                        val code = resp.code()
-                        val msg = when (code) {
+                        val errorBody = resp.errorBody()?.string()
+                        Log.e("LOGIN_DEBUG", "Error HTTP ${resp.code()}: $errorBody")
+                        
+                        val msg = when (resp.code()) {
                             401 -> "Credenciales inválidas"
                             403 -> "Usuario inactivo"
-                            else -> "Error de autenticación ($code)"
+                            else -> "Error de autenticación (${resp.code()})"
                         }
                         Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
                     }
                 } catch (e: Exception) {
-                    e.printStackTrace()
-                    Toast.makeText(requireContext(), "Error de red", Toast.LENGTH_SHORT).show()
+                    Log.e("LOGIN_DEBUG", "Excepción durante el login", e)
+                    Toast.makeText(requireContext(), "Error de red: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         }

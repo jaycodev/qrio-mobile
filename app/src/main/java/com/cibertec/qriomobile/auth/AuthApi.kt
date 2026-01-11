@@ -7,7 +7,7 @@ import retrofit2.http.POST
 import java.util.Date
 
 data class LoginRequest(val email: String, val password: String)
-data class LoginResponse(val accessToken: String)
+data class LoginResponse(val token: String)
 data class TokenInfoResponse(
     val subject: String,
     val role: String?,

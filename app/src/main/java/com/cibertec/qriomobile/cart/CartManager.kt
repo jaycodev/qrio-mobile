@@ -4,6 +4,7 @@ object CartManager {
     private val items = mutableListOf<CartItem>()
 
     @Volatile var tableNumber: Int = 0
+    @Volatile var tableId: Long = 0L
     @Volatile var branchId: Long = 0L
 
     fun add(productId: Long, name: String, price: Double, quantity: Int, imageRes: Int? = null, imageUrl: String? = null) {

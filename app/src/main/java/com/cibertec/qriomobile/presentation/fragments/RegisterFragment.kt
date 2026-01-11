@@ -52,7 +52,7 @@ class RegisterFragment : Fragment() {
                         val authApi = RetrofitClient.create(AuthApi::class.java)
                         val loginResp = authApi.customerLogin(LoginRequest(email, pass))
                         if (loginResp.isSuccessful) {
-                            val token = loginResp.body()?.accessToken
+                            val token = loginResp.body()?.token
                             if (!token.isNullOrBlank()) {
                                 AuthManager.setToken(token)
                                 findNavController().navigate(R.id.homeFragment)
